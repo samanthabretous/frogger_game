@@ -1,23 +1,21 @@
 // Enemies our player must avoid
 var Enemy = function(y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.x = -101;
     this.y = y;
     this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// moves ememies across the screen
 Enemy.prototype.update = function(dt) {
-  // You should multiply any movement by the dt parameter
-  // which will ensure the game runs at the same speed for
-  // all computers.
 
+  updatedSpeed = this.speed * dt;
+  this.x += updatedSpeed;
+  if (this.x > 500){
+    this.x = -101;
+    // changes the variation in speed of the ememies
+    this.speed = randomRange(50, 200);
+  }
 
 };
 
@@ -33,6 +31,12 @@ var Player = function(){
 }
 
 Player.prototype.update = function(dt){
+  if (this.y < 20){
+    alert("you won the game!");
+    this.reset();
+  }
+
+
 
 }
 
@@ -42,6 +46,7 @@ Player.prototype.reset = function() {
     this.y = 404;
 };
 
+// Draw the player on the screen, required method for game
 Player.prototype.render = function(){
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
@@ -80,7 +85,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-function chooseRandomFrom(array){
-    return array[Math.floor(Math.random() * array.length)];
+var randomRange = function(low, high) {       
+  return Math.round(low+((high-low)*Math.random())); 
 }
 
