@@ -13,6 +13,8 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
+var CANVAS_WIDTH = 707;
+var CANVAS_HEIGHT = 920; 
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -24,9 +26,9 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
-    canvas.width = 505;
-    canvas.height = 606;
+    
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -107,16 +109,28 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-        var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
-            numRows = 6,
-            numCols = 5,
+        var rowImages = [];
+
+
+
+            var imageRows = ['images/water-block.png','images/stone-block.png','images/grass-block.png'];
+
+            function createArrayRow(index, times){
+               var i = 1;
+                while (i <= times){
+                    rowImages.push(imageRows[index])
+                    i++;
+                } 
+                
+            }
+            createArrayRow(0,1);
+            createArrayRow(1,5);
+            createArrayRow(2,1);
+
+
+            
+        var numRows = rowImages.length,
+            numCols = 7,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above

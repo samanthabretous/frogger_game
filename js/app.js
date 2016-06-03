@@ -11,7 +11,9 @@ Enemy.prototype.update = function(dt) {
 
   updatedSpeed = this.speed * dt;
   this.x += updatedSpeed;
-  if (this.x > 500){
+  // clear enemies halo effect
+  ctx.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+  if (this.x > CANVAS_WIDTH){
     this.x = -101;
     // changes the variation in speed of the ememies
     this.speed = randomRange(50, 200);
@@ -27,7 +29,9 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
 };
 
 // Player
@@ -48,8 +52,8 @@ Player.prototype.update = function(dt){
 
 // Send player back to start
 Player.prototype.reset = function() {
-    this.x = 202;
-    this.y = 395;
+    this.x = 303;
+    this.y = 478;
 };
 
 // Draw the player on the screen, required method for game
@@ -68,13 +72,14 @@ Player.prototype.handleInput = function(direction){
   } else if (direction === 'down' && this.y < 332){
     this.y +=83;
   }
+  console.log(this.y);
 }
 
 
 
 // Instantiate your objects. and allows the renderEntites to run
 
-var allEnemies = [new Enemy(63, 150), new Enemy(146, 100), new Enemy(229, 75)];
+var allEnemies = [new Enemy(63, 150), new Enemy(146, 100), new Enemy(229, 75), new Enemy(312, 125), new Enemy(395, 95)];
 var player = new Player();
 
 
