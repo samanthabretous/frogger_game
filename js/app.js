@@ -17,6 +17,12 @@ Enemy.prototype.update = function(dt) {
     this.speed = randomRange(50, 200);
   }
 
+//work on this to know when the ememy gets attacked
+  if ((this.x-50 <= player.x === this.x+50 >= player.x) 
+      && this.y === player.y) {
+      player.reset();
+  }
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -43,7 +49,7 @@ Player.prototype.update = function(dt){
 // Send player back to start
 Player.prototype.reset = function() {
     this.x = 202;
-    this.y = 404;
+    this.y = 395;
 };
 
 // Draw the player on the screen, required method for game
