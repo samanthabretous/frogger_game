@@ -1,74 +1,101 @@
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
+ * render methods on player and enemy objects defined in app.js
  *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
- * This engine is available globally via the Engine variable and it also makes
- * the canvas' context (ctx) object globally available to make writing app.js
- * a little simpler to work with.
- */
-var CANVAS_WIDTH = 707;
-var CANVAS_HEIGHT = 920; 
+ * A game engine works by drawing the entire game screen over and over
+*/
 
 var Engine = (function(global) {
-    /* Predefine the variables we'll be using within this scope,
-     * create the canvas element, grab the 2D context for that canvas
-     * set the canvas elements height/width and add it to the DOM.
-     */
-    var doc = global.document,
-        win = global.window,
-        canvas = doc.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
-        lastTime;
-    
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
-    doc.body.appendChild(canvas);
 
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
-     */
-    function main() {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
-        var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+  var game = document.querySelector("#game");
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
-        update(dt);
-        render();
+   //Create Canvas Element
+  canvas = document.createElement('canvas');
+  canvas.width = 707;
+  canvas.height = 680;
+  ctx = canvas.getContext('2d');
+  var lastTime;
 
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        lastTime = now;
+  var mainGame = document.querySelector("#mainGameContainer")
+  mainGame.insertBefore(canvas, mainGame.childNodes[0]);
+  
 
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        win.requestAnimationFrame(main);
+  var allImagesNeeded = ['images/stone-block.png',
+    'images/water-block.png',
+    'images/grass-block.png',
+    'images/enemy-bug.png',
+    'images/char-boy.png',
+    'images/char-cat-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png'];
+
+  
+  //display all the character options    
+  var select = document.querySelectorAll('.select'); 
+
+  for (i = 4; i < allImagesNeeded.length; i++){
+    var character = document.createElement('img');
+    character.setAttribute("class", "selectImage");
+    character.setAttribute("src", allImagesNeeded[i]);
+    select[0].appendChild(character);
+  }
+
+  //once player is selected add border around users choice
+  function setSelectedClass(element) {
+    if (document.querySelector(".selectedChoice")){
+      document.querySelector(".selectedChoice").classList.remove("selectedChoice");         
     }
+
+    element.classList.add("selectedChoice");
+  }
+  //user selects player
+  function selected(){
+    var selectImage = document.querySelectorAll('.selectImage');
+    for (i = 0; i < selectImage.length; i++){
+      selectImage[i].addEventListener('click',function(event){ 
+        setSelectedClass(event.target);
+          hero = event.target.getAttribute("src"); 
+        return hero;                 
+      });
+    };      
+  }
+  
+  selected();
+
+
+  /* This function serves as the kickoff point for the game loop itself
+   * and handles properly calling the update and render methods.
+   */
+  function main() {
+
+    var now = Date.now(),
+        dt = (now - lastTime) / 1000.0;
+
+    /* Call our update/render functions, pass along the time delta to our update function for smooth animation.
+     */
+    update(dt);
+    render(1,5,2);
+
+    /* Set our lastTime variable which is used to determine the time delta for the next time this function is called.
+     */
+    lastTime = now;
+
+    /* Use the browser's requestAnimationFrame function to call this
+     * function again as soon as the browser is able to draw another frame.
+     */
+    global.window.requestAnimationFrame(main);
+  }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
     function init() {
-        reset();
-        lastTime = Date.now();
-        main();
+      reset();
+      lastTime = Date.now();
+      main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -81,8 +108,7 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
+      updateEntities(dt);
     }
 
     /* This is called by the update function and loops through all of the
@@ -93,11 +119,16 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+      if(hero){ //only run enemies once player is selected
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+          enemy.update(dt);
         });
-        player.update();
+      }
+      player.update();
+
     }
+
+
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -105,52 +136,38 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
-        var rowImages = [];
+    function render(water, road, grass) {
+      /* This array holds the relative URL to the image used
+       * for that particular row of the game level.
+       */
+      var rowImages = [];
 
+      function createArrayRow(index, times){
+       var i = 1;
+        while (i <= times){
+            rowImages.push(allImagesNeeded[index])
+            i++;
+        }     
+      }
+      createArrayRow(1,water); // water
+      createArrayRow(0,road); // road
+      createArrayRow(2,grass); // grass
+  
+      var numRows = rowImages.length,
+          numCols = 7,
+          row, col;
 
-
-            var imageRows = ['images/water-block.png','images/stone-block.png','images/grass-block.png'];
-
-            function createArrayRow(index, times){
-               var i = 1;
-                while (i <= times){
-                    rowImages.push(imageRows[index])
-                    i++;
-                } 
-                
-            }
-            createArrayRow(0,1);
-            createArrayRow(1,5);
-            createArrayRow(2,1);
-
-
-            
-        var numRows = rowImages.length,
-            numCols = 7,
-            row, col;
-
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
-        for (row = 0; row < numRows; row++) {
-            for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-            }
+      /* Loop through the number of rows and columns we've defined above
+       * and, using the rowImages array, draw the correct image for that
+       * portion of the "grid"
+       */
+      for (row = 0; row < numRows; row++) {
+        for (col = 0; col < numCols; col++) {
+          ctx.drawImage(Resources.get(rowImages[row]), col * BLOCK_SIZE_X, row * BLOCK_SIZE_Y);
         }
+      }
 
-        renderEntities();
+      renderEntities();
     }
 
     /* This function is called by the render function and is called on each game
@@ -164,7 +181,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
+        
         player.render();
     }
 
@@ -176,17 +193,9 @@ var Engine = (function(global) {
         // noop
     }
 
-    /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
-     * all of these images are properly loaded our game will start.
+    /* load all of the images we know we're going to need 
      */
-    Resources.load([
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
-    ]);
+    Resources.load(allImagesNeeded);
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
@@ -194,4 +203,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.canvas = canvas;
 })(this);

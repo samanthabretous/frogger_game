@@ -1,3 +1,218 @@
-body {
-    text-align: center;
+/*Colors
+	Cream: #DFD9C8
+	Dark Gray: #D2D2C8;
+	Blue: #546BD5;
+	Dark Green: #4B985C;
+	Light Green: #79CC5C;
+	Red: #D5CABE;
+*/
+
+/*TABLE OF CONTENT*/
+/*
+	** INSTRUCTIONS
+	** GAME AREA
+	** INFORMATION
+	** PLAYING AREA
+	** CHARACTER SELECTION
+	** MEDIA QUERY
+*/
+
+
+title{
+	display: none;
 }
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+html{
+	font-size: 100%;
+}
+
+ /*body {width:100%; height:100%; overflow:hidden; margin:0; }
+ html {width:100%; height:100%; overflow:hidden; }
+*/
+body {
+  font-family: 'Oswald', sans-serif;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #DFD9C8;
+  display: flex;
+	flex-direction: column;
+}
+
+/*--------------------INSTRUCTIONS------------------*/
+#intro{
+	width: 100%;
+	height: 12%;
+	min-height: 115px;
+	display: flex;
+	flex-direction: column;
+}
+
+h1{
+	font-size: 2rem;
+	padding-top: 1%;
+	height: 66%;
+	color: #546BD5;
+	text-transform: uppercase;
+}
+
+p{ 
+	background: #79CC5C;
+	color: white;
+	font-size: 1rem;
+	line-height: 2rem;
+	height: 33%;
+}
+
+/*---------------GAME AREA------------------*/
+/*---------------GAME AREA------------------*/
+
+#game {
+	align-items: stretch;
+	flex-wrap: wrap;
+	height:88%;
+	display: flex;
+	flex-direction: row;
+}
+
+/*-------------INFORMATION------------------*/
+.levelInfo{
+	padding: 10% 2%;
+	background: #D5CABE;
+	width: 30%;
+	color: #546BD5;
+}
+
+#name{
+	background: none;
+	font-size: 1.25rem;
+	width: 90%;
+	border-bottom: 5px solid #DFD9C8;
+	outline: none;
+	color: white;
+}
+
+
+#name:focus{
+	outline: none;
+}
+
+#resetButton{
+	font-size: 1.25rem;
+	width: 150px;
+	background: #79CC5C;
+	color: white;
+	font-family: "Oswald", sans-serif;
+}
+
+/*--------------PLAYING AREA---------------*/
+
+#mainGameContainer{
+	width: 70%;
+}
+
+canvas{
+	height: auto;
+	width: 80%;
+	min-width: 350px;
+}
+
+
+
+
+/*-----------CHARACTER SELECTION-------------*/
+.selectHero{
+	padding: 0 10%;
+	background: #DFD9C8;
+	max-width: 1220px;
+	margin: 0 auto;
+	height: 15%;
+	display: flex;
+	flex-direction: row;
+	
+}
+
+h3{
+	font-size: 1.25rem;
+	line-height: 1.25rem;
+}
+
+.select{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 80%;
+
+}
+
+.selectedChoice {
+		outline: thick outset orange;
+}
+
+.selectImage{
+	width: 15%;
+	height: auto;
+
+}
+
+/*-----------MEDIA QUERY-------------*/
+@media only screen and (max-width:810px){
+	h1{
+		background: #D5CABE;
+	}
+
+	.levelInfo{
+		width: 100%;
+		padding: 1% 0 3% 0;
+		font-size: .875rem;
+		margin: 0 auto;
+	}
+	#mainInfo{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		padding: 1% 10%;
+
+	}
+
+	#name{
+		width: 40%;
+	}
+
+	/*---------GAME---------*/
+	#game{
+		flex-direction:column;
+	}
+
+	#mainGameContainer{
+		width: 100%;
+	}
+
+	.selectHero{
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

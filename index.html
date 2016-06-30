@@ -2,12 +2,50 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Frogger: JavaScript</title>
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+	<div id="intro">
+    <h1>Frogger</h1>
+	 <p>Get the HERO to the reach the water. Be careful not to hit an enemy bug</p>
+  </div>
+  <div id="game">
+		<div class="levelInfo">
+      <div id="mainInfo">
+
+        <h2>Level: <span id="levelDisplay">1<span></h2>
+        <h2>Score: <span id="scoreDisplay">0<span></h2>
+
+      <button id="resetButton">Reset</button>
+    </div>
+      
+      <label for="name">Character&#39;s Name: </label>
+      <input id="name" type="name">
+
+    </div><!--.levelTracker-->
+    <div id="mainGameContainer">
+
+      <div class="selectHero">
+        <h3>Select Your Hero:</h3>
+        <div class="select">
+
+        </div>
+      </div><!--.selectHero-->
+    </div><!--#mainGameContainer-->
+
+
+	
+  </div><!--#game-->
+
+
+
+<script src="js/resources.js"></script>
+<script src="js/enemy.js"></script>
+<script src="js/player.js"></script>
+<script src="js/app.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/level.js"></script>
 </body>
 </html>
